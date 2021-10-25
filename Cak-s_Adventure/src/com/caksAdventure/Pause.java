@@ -1,5 +1,5 @@
 package com.caksAdventure;
 
-public class Pause {
+public class Pause extends Start {
 
 }
