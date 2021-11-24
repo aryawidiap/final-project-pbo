@@ -15,6 +15,7 @@ public class GameStateManager {
 		
 		currentState=0;
 		gameStates.add(new MenuState(this));
+		gameStates.add(new Level1State(this));
 	
 	}
 	
@@ -41,4 +42,3 @@ public class GameStateManager {
 		gameStates.get(currentState).keyReleased(k);
 	}
 }
-
