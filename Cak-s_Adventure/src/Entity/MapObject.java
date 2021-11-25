@@ -143,6 +143,8 @@ public abstract class MapObject {
 				dx = 0;
 				xtemp = (currCol+1) * tileSize - cwidth / 2;
 			} 
+		} else {
+			xtemp += dx;
 		}
 		
 		if (!falling) {
@@ -160,7 +162,7 @@ public abstract class MapObject {
 	public int getCWidth() { return cwidth; }
 	public int getCHeight() { return cheight; }
 	
-	public void setPostition(double x, double y) {
+	public void setPosition(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
