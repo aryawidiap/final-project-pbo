@@ -25,6 +25,7 @@ public class Level1State extends GameState {
 		tileMap.loadTiles(""); // input tile picture here
 		tileMap.loadMap(""); // input map here
 		tileMap.setPosition(0, 0);
+		tileMap.setTween(1);
 
 		bg = new Background("", 0.1); // input background here
 		player = new Player(tileMap);
