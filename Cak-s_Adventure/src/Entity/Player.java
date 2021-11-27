@@ -23,7 +23,7 @@ public class Player extends MapObject {
 	private boolean firing;
 	private int attackCost;
 	private int attackDamage;
-	// private ArrayList<BallPen> ballPen;
+	private ArrayList<FireBall> fireBalls;
 
 	// Scratch
 	private boolean scratching;
@@ -66,7 +66,7 @@ public class Player extends MapObject {
 
 		attackCost = 200;
 		attackDamage = 5;
-		// ballPens = new ArrayList<BallPen>();
+		fireBalls = new ArrayList<FireBall>();
 
 		scratchDamage = 8;
 		scratchRange = 40;
@@ -81,7 +81,7 @@ public class Player extends MapObject {
 					if (i != 6) { // other than scratching sprite, use width of 30px
 						bi[j] = spriteSheet.getSubimage(j * width, i * height, width, height);
 					} else { // scratching sprite use width of 60px
-						bi[j] = spriteSheet.getSubimage(j * width * 2, i * height, width, height);
+						bi[j] = spriteSheet.getSubimage(j * width * 2, i * height, width * 2, height);
 					}
 				}
 				sprites.add(bi);
@@ -185,7 +185,39 @@ public class Player extends MapObject {
 		getNextPosition();
 		checkTileMapCollision();
 		setPosition(xtemp, ytemp);
-
+		
+		// Check attack has stopped
+		if(currentAction == SCRATCHING) {
+			if(animation.hasPlayedOnce())
+				scratching = false;
+		}
+		
+		if(currentAction == FIREBALL) {
+			if(animation.hasPlayedOnce())
+				firing = false;
+		}
+		
+		// Fire ball attack
+		fire += 1;
+		if(fire > maxFire)
+			fire = maxFire;
+		if(firing && currentAction != FIREBALL) {
+			if(fire > attackCost) {
+				fire -= attackCost;
+				FireBall fb = new FireBall(tileMap, facingRight);
+				fireBalls.add(fb);
+			}
+		}
+		
+		// Update fireballs
+		for(int i = 0; i < fireBalls.size(); i++) {
+			fireBalls.get(i).update();
+			if(fireBalls.get(i).shouldRemove()) {
+				fireBalls.remove(i);
+				i--;
+			}
+		}
+		
 		// Set animation
 		if (scratching) {
 			if (currentAction != SCRATCHING) {
@@ -251,7 +283,12 @@ public class Player extends MapObject {
 
 	public void draw(Graphics2D g) {
 		setMapPosition();
-
+		
+		// Draw fireBalls
+		for(int i = 0; i < fireBalls.size(); i++) {
+			fireBalls.get(i).draw(g);
+		}
+		
 		// Draw player
 		if (flinching) {
 			long elapsed = (System.nanoTime() - flinchTimer) / 1000000;
