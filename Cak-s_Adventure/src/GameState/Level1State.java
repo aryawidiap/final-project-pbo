@@ -2,10 +2,13 @@ package GameState;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import Entity.Enemy;
+import Entity.Explosion;
 import Entity.HUD;
 import Entity.Player;
 import Entity.Enemies.Tugas;
@@ -17,12 +20,14 @@ public class Level1State extends GameState {
 
 	private TileMap tileMap;
 	private Background bg;
-	
+
 	private Player player;
 
 	private ArrayList<Enemy> enemies;
-	
+	private ArrayList<Explosion> explosions;
+
 	private HUD hud;
+
 	public Level1State(GameStateManager gsm) {
 		this.gsm = gsm;
 		init();
@@ -38,27 +43,63 @@ public class Level1State extends GameState {
 		bg = new Background("", 0.1); // input background here
 		player = new Player(tileMap);
 		player.setPosition(100, 100); // set player position to desired starting point
-		
+
+		populateEnemies();
+
+		explosions = new ArrayList<Explosion>();
+
+		hud = new HUD(player);
+	}
+
+	private void populateEnemies() {
 		enemies = new ArrayList<Enemy>();
 		Tugas tugas;
-		tugas = new Tugas(tileMap);
-		tugas.setPosition(100, 100);
-		enemies.add(tugas);
-		
-		hud = new HUD(player);
+
+		Point[] points = new Point[] { // set enemies starting point
+			new Point(200, 100),
+			new Point(860, 200),
+			new Point(1525, 200), 
+			new Point(1680, 200), 
+			new Point(1800, 200)
+		};
+
+		for (int i = 0; i < points.length; i++) {
+			tugas = new Tugas(tileMap);
+			tugas.setPosition(points[i].x, points[i].y);
+			enemies.add(tugas);
+		}
 	}
 
 	public void update() {
 		// Update player
 		player.update();
 		tileMap.setPosition(GamePanel.WIDTH / 2 - player.getx(), GamePanel.HEIGHT / 2 - player.gety());
-		
+
 		// set background
 		bg.setPosition(tileMap.getX(), tileMap.getY());
-		
+
+		// Attack enemies
+		player.checkAttack(enemies);
+
 		// Update All Enemies
-		for(int i = 0; i < enemies.size(); i++) {
-			enemies.get(i).update();
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy e = enemies.get(i);
+			e.update();
+			if (e.isDead()) {
+				enemies.remove(i);
+				i--;
+				explosions.add(new Explosion(e.getx(), e.gety()));
+			}
+		}
+
+		// Update explosions
+		for (int i = 0; i < explosions.size(); i++) {
+			Explosion explosion = explosions.get(i);
+			explosion.update();
+			if (explosion.shouldRemove()) {
+				explosions.remove(i);
+				i--;
+			}
 		}
 	}
 
@@ -71,12 +112,17 @@ public class Level1State extends GameState {
 
 		// Draw player
 		player.draw(g);
-		
+
 		// Draw enemies
-		for(int i = 0; i < enemies.size(); i++) {
+		for (int i = 0; i < enemies.size(); i++) {
 			enemies.get(i).draw(g);
 		}
-		
+
+		// Draw explosions
+		for (int i = 0; i < explosions.size(); i++) {
+			explosions.get(i).setMapPosition((int) tileMap.getX(), (int) tileMap.getY());
+			explosions.get(i).draw(g);
+		}
 		// draw HUD
 		hud.draw(g);
 	}
