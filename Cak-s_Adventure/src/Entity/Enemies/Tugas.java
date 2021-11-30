@@ -112,7 +112,7 @@ public class Tugas extends Enemy{
 	
 	public void draw(Graphics2D g) {
 		
-		if(notOnScreen()) return;
+		//if(notOnScreen()) return;
 		
 		setMapPosition();
 		
