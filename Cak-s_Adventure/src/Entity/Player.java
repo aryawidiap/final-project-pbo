@@ -3,9 +3,11 @@ package Entity;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import Audio.AudioPlayer;
 import TileMap.TileMap;
 
 public class Player extends MapObject {
@@ -46,7 +48,9 @@ public class Player extends MapObject {
 	private static final int GLIDING = 4;
 	private static final int FIREBALL = 5;
 	private static final int SCRATCHING = 6;
-
+	
+	private HashMap<String, AudioPlayer> sfx;
+	
 	public Player(TileMap tm) {
 		super(tm);
 		width = 30;
@@ -93,8 +97,12 @@ public class Player extends MapObject {
 		animation = new Animation();
 		currentAction = IDLE;
 		animation.setFrames(sprites.get(IDLE));
-		animation.setDelay(500);
-
+		animation.setDelay(400);
+		
+		sfx = new HashMap<String, AudioPlayer>();
+		
+		sfx.put("jump", new AudioPlayer("")); // isi lokasi music
+		sfx.put("scratch", new AudioPlayer("")); // isi lokasi music
 	}
 
 	public int getHealth() {
@@ -210,6 +218,7 @@ public class Player extends MapObject {
 
 		// jumping
 		if (jumping && !falling) {
+			sfx.get("jump").play();
 			dy = jumpStart;
 			falling = true;
 		}
@@ -280,6 +289,7 @@ public class Player extends MapObject {
 		// Set animation
 		if (scratching) {
 			if (currentAction != SCRATCHING) {
+				sfx.get("scratch").play();
 				currentAction = SCRATCHING;
 				animation.setFrames(sprites.get(SCRATCHING));
 				animation.setDelay(50);

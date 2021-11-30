@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
-
+import Audio.AudioPlayer;
 import Entity.Enemy;
 import Entity.Explosion;
 import Entity.HUD;
@@ -27,7 +27,8 @@ public class Level1State extends GameState {
 	private ArrayList<Explosion> explosions;
 
 	private HUD hud;
-
+	
+	private AudioPlayer bgMusic;
 	public Level1State(GameStateManager gsm) {
 		this.gsm = gsm;
 		init();
@@ -49,7 +50,9 @@ public class Level1State extends GameState {
 		explosions = new ArrayList<Explosion>();
 
 		hud = new HUD(player);
-	}
+		bgMusic =  new AudioPlayer("");//isi file bgmusik
+		bgMusic.play();
+}
 
 	private void populateEnemies() {
 		enemies = new ArrayList<Enemy>();
