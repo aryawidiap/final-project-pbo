@@ -14,13 +14,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 	// dimensi
 	public static final int WIDTH = 320;
 	public static final int HEIGHT = 240;
-	public static final int SCALE = 2;
+	public static final int SCALE = 3;
 	
 	// game thread
 	private Thread thread;
 	private boolean running;
 	private int FPS = 60;
-	private long targetTime = 100/FPS;
+	private long targetTime = 1000/FPS;
 	
 	//image
 	private BufferedImage image;
