@@ -35,7 +35,7 @@ public class GameStateManager {
 		currentState = state;
 		loadState(currentState);
 		
-		gameStates[currentState].init();
+		//gameStates[currentState].init();
 		
 	}
 	
@@ -43,7 +43,7 @@ public class GameStateManager {
 		try {
 			gameStates[currentState].update();
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 	}
@@ -52,7 +52,7 @@ public class GameStateManager {
 		try {
 			gameStates[currentState].draw(g);
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 	}
 	

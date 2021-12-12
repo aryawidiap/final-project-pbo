@@ -17,7 +17,7 @@ public class HUD {
 		player = p;
 		try {
 			image = ImageIO.read(
-				getClass().getResourceAsStream("/HUD/HUD.gif")// hud image
+				getClass().getResourceAsStream("/HUD/HUD.png")// hud image
 			);
 			font = new Font("Arial", Font.PLAIN, 14);
 			
