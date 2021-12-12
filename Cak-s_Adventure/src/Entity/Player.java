@@ -152,13 +152,13 @@ public class Player extends MapObject {
 			}
 
 			// Fireballs
-			for (int j = 0; j < fireBalls.size(); j++) {
-				if (fireBalls.get(j).intersects(e)) {
-					e.hit(attackDamage);
-					fireBalls.get(j).setHit();
-					break;
-				}
-			}
+			// for (int j = 0; j < fireBalls.size(); j++) {
+			// 	if (fireBalls.get(j).intersects(e)) {
+			// 		e.hit(attackDamage);
+			// 		fireBalls.get(j).setHit();
+			// 		break;
+			// 	}
+			// }
 
 			// Check enemy collision
 			if (intersects(e)) {
@@ -349,9 +349,9 @@ public class Player extends MapObject {
 		setMapPosition();
 
 		// Draw fireBalls
-		for (int i = 0; i < fireBalls.size(); i++) {
-			fireBalls.get(i).draw(g);
-		}
+		// for (int i = 0; i < fireBalls.size(); i++) {
+		// 	fireBalls.get(i).draw(g);
+		// }
 
 		// Draw player
 		if (flinching) {
