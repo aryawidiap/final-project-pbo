@@ -44,7 +44,7 @@ public class Player extends MapObject {
 	private static final int IDLE = 0;
 	private static final int WALKING = 1;
 	private static final int JUMPING = 2;
-	private static final int SCRATCHING = 4;
+	private static final int SCRATCHING = 3;
 
 	private HashMap<String, AudioPlayer> sfx;
 
@@ -65,9 +65,9 @@ public class Player extends MapObject {
 		health = maxHealth = 5;
 		// fire = maxFire = 2500;
 
-		attackCost = 200;
-		attackDamage = 5;
-		fireBalls = new ArrayList<FireBall>();
+		// attackCost = 200;
+		// attackDamage = 5;
+		// fireBalls = new ArrayList<FireBall>();
 
 		scratchDamage = 8;
 		scratchRange = 40;
