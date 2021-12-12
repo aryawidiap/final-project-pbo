@@ -29,7 +29,7 @@ public class HUD {
 	
 	public void draw(Graphics2D g) {
 		 
-		g.drawImage(image, 0, 10, null);
+		g.drawImage(image, 0, 6, null);
 		g.setFont(font);
 		g.setColor(Color.WHITE);
 		g.drawString(
