@@ -35,14 +35,14 @@ public class MenuState extends GameState{
 		
 	}
 	public void update() {
-		
+		bg.update();
 	}
 	public void draw(Graphics2D g) {
 		bg.draw(g);
 		
 		g.setColor(titleColor);
 		g.setFont(titleFont);
-		g.drawString("Cak's Adventures", 80, 70);
+		g.drawString("Cak's Adventures", 30, 70);
 		
 		g.setFont(font);
 		for(int i = 0; i<option.length; i++) {
