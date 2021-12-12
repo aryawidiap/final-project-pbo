@@ -29,7 +29,7 @@ public class Explosion {
 		height = 30;
 
 		try {
-			BufferedImage spriteSheet = ImageIO.read(getClass().getResourceAsStream(""));
+			BufferedImage spriteSheet = ImageIO.read(getClass().getResourceAsStream("/Sprites/Enemy/explosion.gif"));
 			sprites = new BufferedImage[6];
 			for(int i = 0; i < sprites.length; i++) {
 				sprites[i] = spriteSheet.getSubimage(i * width, 0, width, height);
