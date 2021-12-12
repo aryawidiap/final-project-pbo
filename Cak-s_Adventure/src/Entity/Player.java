@@ -33,7 +33,7 @@ public class Player extends MapObject {
 	private int scratchRange;
 
 	// Gliding
-	private boolean gliding;
+	//private boolean gliding;
 
 	// Animation
 	private ArrayList<BufferedImage[]> sprites;
@@ -220,7 +220,7 @@ public class Player extends MapObject {
 
 		// falling
 		if (falling) {
-			if (dy > 0 && gliding)
+			if (dy > 0 )
 				dy += fallSpeed * 0.1;
 			else
 				dy += fallSpeed;
