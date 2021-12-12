@@ -1,6 +1,5 @@
 package Entity;
 
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import Main.GamePanel;

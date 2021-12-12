@@ -1,11 +1,9 @@
 package GameState;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import Audio.AudioPlayer;
 import Entity.Enemy;
 import Entity.Explosion;
@@ -35,22 +33,22 @@ public class Level1State extends GameState {
 	}
 
 	public void init() {
-		tileMap = new TileMap(30);
-		tileMap.loadTiles(""); // input tile picture here
-		tileMap.loadMap(""); // input map here
+		tileMap = new TileMap(32);
+		tileMap.loadTiles("/Tilemaps/TileSet.gif"); // input tile picture here
+		tileMap.loadMap("/Maps/level1-1.map"); // input map here
 		tileMap.setPosition(0, 0);
 		tileMap.setTween(1);
 
-		bg = new Background("", 0.1); // input background here
+		bg = new Background("/Background/GameBackground.gif", 0.1); // input background here
 		player = new Player(tileMap);
-		player.setPosition(100, 100); // set player position to desired starting point
+		player.setPosition(0, 0); // set player position to desired starting point
 
 		populateEnemies();
 
 		explosions = new ArrayList<Explosion>();
 
 		hud = new HUD(player);
-		bgMusic =  new AudioPlayer("");//isi file bgmusik
+		bgMusic =  new AudioPlayer("/Audio/little-archemist.wav");//isi file bgmusik
 		bgMusic.play();
 }
 
@@ -147,15 +145,15 @@ public class Level1State extends GameState {
 		if (k == KeyEvent.VK_W) {
 			player.setJumping(true);
 		}
-		if (k == KeyEvent.VK_E) {
+		/*if (k == KeyEvent.VK_E) {
 			player.setGliding(true);
-		}
+		}*/
 		if (k == KeyEvent.VK_R) {
 			player.setScratching();
 		}
-		if (k == KeyEvent.VK_F) {
+		/*if (k == KeyEvent.VK_F) {
 			player.setFiring();
-		}
+		}*/
 	}
 
 	@Override
@@ -175,15 +173,15 @@ public class Level1State extends GameState {
 		if (k == KeyEvent.VK_W) {
 			player.setJumping(false);
 		}
-		if (k == KeyEvent.VK_E) {
+		/*if (k == KeyEvent.VK_E) {
 			player.setGliding(false);
-		}
+		}*/
 		if (k == KeyEvent.VK_R) {
 			player.setScratching();
 		}
-		if (k == KeyEvent.VK_F) {
-			player.setFiring();
-		}
+		// if (k == KeyEvent.VK_F) {
+		// 	player.setFiring();
+		// }
 	}
 
 }

@@ -15,14 +15,14 @@ public class Player extends MapObject {
 	// Attributes
 	private int health;
 	private int maxHealth;
-	private int fire;
-	private int maxFire;
+	//private int fire;
+	//private int maxFire;
 	private boolean dead;
 	private boolean flinching;
 	private long flinchTimer;
 
 	// Attack
-	private boolean firing;
+	// private boolean firing;
 	private int attackCost;
 	private int attackDamage;
 	private ArrayList<FireBall> fireBalls;
@@ -38,23 +38,20 @@ public class Player extends MapObject {
 	// Animation
 	private ArrayList<BufferedImage[]> sprites;
 	private final int[] numFrames = { // numbers of player sprite for each action / animation
-			2, 8, 1, 2, 4, 2, 5 };
+			1, 7, 7, 3};
 
 	// Animation Actions / State
 	private static final int IDLE = 0;
 	private static final int WALKING = 1;
 	private static final int JUMPING = 2;
-	private static final int FALLING = 3;
-	private static final int GLIDING = 4;
-	private static final int FIREBALL = 5;
-	private static final int SCRATCHING = 6;
-	
+	private static final int SCRATCHING = 4;
+
 	private HashMap<String, AudioPlayer> sfx;
-	
+
 	public Player(TileMap tm) {
 		super(tm);
-		width = 30;
-		height = 30;
+		width = 32;
+		height = 32;
 		cwidth = 20;
 		cheight = 20;
 
@@ -66,7 +63,7 @@ public class Player extends MapObject {
 		jumpStart = -4.8;
 		facingRight = true;
 		health = maxHealth = 5;
-		fire = maxFire = 2500;
+		// fire = maxFire = 2500;
 
 		attackCost = 200;
 		attackDamage = 5;
@@ -77,16 +74,12 @@ public class Player extends MapObject {
 
 		// Load sprites
 		try {
-			BufferedImage spriteSheet = ImageIO.read(getClass().getResourceAsStream(""));
+			BufferedImage spriteSheet = ImageIO.read(getClass().getResourceAsStream("/Sprites/Player/CaksSprite.gif"));
 			sprites = new ArrayList<BufferedImage[]>();
-			for (int i = 0; i < 7; i++) {
+			for (int i = 0; i < 4; i++) { // rows
 				BufferedImage[] bi = new BufferedImage[numFrames[i]];
-				for (int j = 0; j < numFrames[i]; j++) {
-					if (i != 6) { // other than scratching sprite, use width of 30px
-						bi[j] = spriteSheet.getSubimage(j * width, i * height, width, height);
-					} else { // scratching sprite use width of 60px
-						bi[j] = spriteSheet.getSubimage(j * width * 2, i * height, width * 2, height);
-					}
+				for (int j = 0; j < numFrames[i]; j++) { // column
+					bi[j] = spriteSheet.getSubimage(j * width, i * height, width, height);
 				}
 				sprites.add(bi);
 			}
@@ -98,11 +91,11 @@ public class Player extends MapObject {
 		currentAction = IDLE;
 		animation.setFrames(sprites.get(IDLE));
 		animation.setDelay(400);
-		
+
 		sfx = new HashMap<String, AudioPlayer>();
-		
-		sfx.put("jump", new AudioPlayer("")); // isi lokasi music
-		sfx.put("scratch", new AudioPlayer("")); // isi lokasi music
+
+		sfx.put("jump", new AudioPlayer("/Audio/jump.wav")); // isi lokasi music
+		sfx.put("scratch", new AudioPlayer("/Audio/punch.wav")); // isi lokasi music
 	}
 
 	public int getHealth() {
@@ -113,7 +106,7 @@ public class Player extends MapObject {
 		return maxHealth;
 	}
 
-	public int getFire() {
+	/*public int getFire() {
 		return fire;
 	}
 
@@ -123,15 +116,15 @@ public class Player extends MapObject {
 
 	public void setFiring() {
 		firing = true;
-	}
+	}*/
 
 	public void setScratching() {
 		scratching = true;
 	}
 
-	public void setGliding(boolean b) {
+	/*public void setGliding(boolean b) {
 		gliding = b;
-	}
+	}*/
 
 	// Check attack
 	public void checkAttack(ArrayList<Enemy> enemies) {
@@ -157,33 +150,35 @@ public class Player extends MapObject {
 					}
 				}
 			}
-			
+
 			// Fireballs
-			for(int j = 0; j < fireBalls.size(); j++) {
-				if(fireBalls.get(j).intersects(e)) {
+			for (int j = 0; j < fireBalls.size(); j++) {
+				if (fireBalls.get(j).intersects(e)) {
 					e.hit(attackDamage);
 					fireBalls.get(j).setHit();
 					break;
 				}
 			}
-			
+
 			// Check enemy collision
-			if(intersects(e)) {
+			if (intersects(e)) {
 				hit(e.getDamage());
 			}
 		}
 	}
-	
+
 	public void hit(int damage) {
-		if(flinching) return;
+		if (flinching)
+			return;
 		health -= damage;
-		if(health < 0)
+		if (health < 0)
 			health = 0;
-		if(health == 0)
+		if (health == 0)
 			dead = true;
 		flinching = true;
 		flinchTimer = System.nanoTime();
 	}
+
 	private void getNextPosition() {
 
 		// Movement
@@ -212,7 +207,7 @@ public class Player extends MapObject {
 		}
 
 		// can not move while attacking, except in air
-		if ((currentAction == SCRATCHING || currentAction == FIREBALL) && !(jumping || falling)) {
+		if ((currentAction == SCRATCHING /*|| currentAction == FIREBALL*/) && !(jumping || falling)) {
 			dx = 0;
 		}
 
@@ -252,13 +247,13 @@ public class Player extends MapObject {
 				scratching = false;
 		}
 
-		if (currentAction == FIREBALL) {
+		/*if (currentAction == FIREBALL) {
 			if (animation.hasPlayedOnce())
 				firing = false;
-		}
+		}*/
 
 		// Fire ball attack
-		fire += 1;
+		/*fire += 1;
 		if (fire > maxFire)
 			fire = maxFire;
 		if (firing && currentAction != FIREBALL) {
@@ -276,12 +271,12 @@ public class Player extends MapObject {
 				fireBalls.remove(i);
 				i--;
 			}
-		}
-		
+		}*/
+
 		// Check done flinching
-		if(flinching) {
+		if (flinching) {
 			long elapsed = (System.nanoTime() - flinchTimer) / 1000000;
-			if(elapsed > 1000) {
+			if (elapsed > 1000) {
 				flinching = false;
 			}
 		}
@@ -295,15 +290,15 @@ public class Player extends MapObject {
 				animation.setDelay(50);
 				width = 60;
 			}
-		} else if (firing) {
+		} /*else if (firing) {
 			if (currentAction != FIREBALL) {
 				currentAction = FIREBALL;
 				animation.setFrames(sprites.get(FIREBALL));
 				animation.setDelay(100);
 				width = 30;
 			}
-		} else if (dy > 0) {
-			if (gliding) {
+		}*/ else if (dy > 0) {
+			/*if (gliding) {
 				if (currentAction != GLIDING) {
 					currentAction = GLIDING;
 					animation.setFrames(sprites.get(GLIDING));
@@ -315,7 +310,7 @@ public class Player extends MapObject {
 					animation.setDelay(100);
 					width = 30;
 				}
-			}
+			}*/
 		} else if (dy < 0) {
 			if (currentAction != JUMPING) {
 				currentAction = JUMPING;
@@ -342,7 +337,7 @@ public class Player extends MapObject {
 		animation.update();
 
 		// Set direction
-		if (currentAction != SCRATCHING && currentAction != FIREBALL) {
+		if (currentAction != SCRATCHING /*&& currentAction != FIREBALL*/) {
 			if (right)
 				facingRight = true;
 			if (left)

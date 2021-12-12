@@ -20,8 +20,8 @@ public class Tugas extends Enemy{
 		fallSpeed = 0.2;
 		maxFallSpeed = 10.0;
 		
-		width = 30;
-		height = 30;
+		width = 32;
+		height = 32;
 		cwidth = 20;
 		cheight = 20;
 		
@@ -33,7 +33,7 @@ public class Tugas extends Enemy{
 			
 			BufferedImage spritesheet = ImageIO.read(
 				getClass().getResourceAsStream(
-					""	//add tugas image
+					"/Sprites/Enemy/Tugas.gif"	//add tugas image
 				)	
 			);
 			

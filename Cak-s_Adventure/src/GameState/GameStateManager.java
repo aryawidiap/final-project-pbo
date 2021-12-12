@@ -1,9 +1,5 @@
 package GameState;
 
-import java.util.ArrayList;
-
- 
-
 public class GameStateManager {
 	
 	private GameState[] gameStates;
@@ -39,7 +35,7 @@ public class GameStateManager {
 		currentState = state;
 		loadState(currentState);
 		
-		//gameStates[currentState].init();
+		gameStates[currentState].init();
 		
 	}
 	
