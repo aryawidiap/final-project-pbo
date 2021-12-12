@@ -149,8 +149,8 @@ public class TileMap {
 	}
 
 	public void draw(Graphics2D g) {
-		for (int row = rowOffset; (row < rowOffset + numRowsToDraw) || (row < numRows); row++) {
-			for (int col = colOffset; (col < colOffset + numColsToDraw) || (col < numCols); col++) {
+		for (int row = rowOffset; (row < rowOffset + numRowsToDraw) && (row < numRows); row++) {
+			for (int col = colOffset; (col < colOffset + numColsToDraw) && (col < numCols); col++) {
 				if (map[row][col] == 0)
 					continue;
 				int rc = map[row][col];
