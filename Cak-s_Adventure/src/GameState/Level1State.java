@@ -49,6 +49,7 @@ public class Level1State extends GameState {
 
 		hud = new HUD(player);
 		bgMusic =  new AudioPlayer("/Audio/little-archemist.wav");//isi file bgmusik
+		bgMusic.setVolume(-30);
 		bgMusic.play();
 }
 
@@ -105,6 +106,11 @@ public class Level1State extends GameState {
 	}
 
 	public void draw(Graphics2D g) {
+		// Check if player is dead
+		if(player.isDead()) {
+			gsm.setState(GameStateManager.GAMEOVERSTATE);
+		}
+		
 		// Draw bg
 		bg.draw(g);
 
@@ -151,9 +157,6 @@ public class Level1State extends GameState {
 		if (k == KeyEvent.VK_R) {
 			player.setScratching();
 		}
-		/*if (k == KeyEvent.VK_F) {
-			player.setFiring();
-		}*/
 	}
 
 	@Override
@@ -179,9 +182,6 @@ public class Level1State extends GameState {
 		if (k == KeyEvent.VK_R) {
 			player.setScratching();
 		}
-		// if (k == KeyEvent.VK_F) {
-		// 	player.setFiring();
-		// }
 	}
 
 }
