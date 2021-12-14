@@ -4,6 +4,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 public class AudioPlayer {
 	private Clip clip;
@@ -51,5 +52,10 @@ public class AudioPlayer {
 	public void close() {
 		stop();
 		clip.close();
+	}
+	public void setVolume(float volume) {
+		FloatControl gainControl = 
+			    (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(volume); // Reduce volume by 10 decibels.
 	}
 }
