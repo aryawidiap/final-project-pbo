@@ -5,9 +5,10 @@ public class GameStateManager {
 	private GameState[] gameStates;
 	private int currentState;
 	
-	public static final int NUMGAMESTATES = 2;
+	public static final int NUMGAMESTATES = 3;
 	public static final int MENUSTATE = 0;
 	public static final int LEVEL1STATE = 1;
+	public static final int GAMEOVERSTATE = 2;
 	
 	public GameStateManager() {
 		gameStates = new GameState[NUMGAMESTATES];
@@ -23,23 +24,25 @@ public class GameStateManager {
 		}
 		if(state ==  LEVEL1STATE) {
 			gameStates[state] = new Level1State(this);
-			
 		}
+		if(state ==  GAMEOVERSTATE) {
+			gameStates[state] = new GameOverState(this);
+		}
+		System.out.println("State loaded!");
 	}
 	
 	private void unloadState(int state) {
 		gameStates[state] =  null;
 	}
-	public void setState(int state) {
+	public synchronized void setState(int state) {
 		unloadState(currentState);
 		currentState = state;
 		loadState(currentState);
-		
-		//gameStates[currentState].init();
+		System.out.println(gameStates[currentState]);
 		
 	}
 	
-	public void update() {
+	public synchronized void update() {
 		try {
 			gameStates[currentState].update();
 		} catch (Exception e) {
