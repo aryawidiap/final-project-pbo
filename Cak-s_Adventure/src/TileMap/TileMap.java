@@ -116,6 +116,9 @@ public class TileMap {
 	}
 
 	public int getType(int row, int col) {
+		if(row < 0) {
+			return Tile.NORMAL; 
+		}
 		int rc = map[row][col];
 		int r = rc / numTilesAcross;
 		int c = rc % numTilesAcross;
