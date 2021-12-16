@@ -109,6 +109,7 @@ public class Level1State extends GameState {
 		// Check if player is dead
 		if(player.isDead()) {
 			gsm.setState(GameStateManager.GAMEOVERSTATE);
+			bgMusic.stop();
 		}
 		
 		// Draw bg
