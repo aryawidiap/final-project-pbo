@@ -28,18 +28,16 @@ public class GameStateManager {
 		if(state ==  GAMEOVERSTATE) {
 			gameStates[state] = new GameOverState(this);
 		}
-		System.out.println("State loaded!");
 	}
 	
 	private void unloadState(int state) {
 		gameStates[state] =  null;
 	}
 	public synchronized void setState(int state) {
-		unloadState(currentState);
+		int tempState = currentState;
 		currentState = state;
 		loadState(currentState);
-		System.out.println(gameStates[currentState]);
-		
+		unloadState(tempState);
 	}
 	
 	public synchronized void update() {
