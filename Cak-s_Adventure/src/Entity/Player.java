@@ -10,14 +10,7 @@ import javax.imageio.ImageIO;
 import Audio.AudioPlayer;
 import TileMap.TileMap;
 
-public class Player extends MapObject {
-
-	// Attributes
-	private int health;
-	private int maxHealth;
-	private boolean dead;
-	private boolean flinching;
-	private long flinchTimer;
+public class Player extends Actor {
 
 	// Scratch
 	private boolean scratching;
@@ -30,49 +23,29 @@ public class Player extends MapObject {
 	// Animation
 	private ArrayList<BufferedImage[]> sprites;
 	private final int[] numFrames = { // numbers of player sprite for each action / animation
-			1, 7, 7, 3 };
+			1, 7, 1, 1, 3 };
 
 	// Animation Actions / State
 	private static final int IDLE = 0;
 	private static final int WALKING = 1;
 	private static final int JUMPING = 2;
-	private static final int SCRATCHING = 3;
+	private static final int FALLING = 3;
+	private static final int SCRATCHING = 4;
 
 	private HashMap<String, AudioPlayer> sfx;
 
 	public Player(TileMap tm) {
-		super(tm);
-		width = 32;
-		height = 32;
-		cwidth = 10;
-		cheight = 32;
+		super(tm, 5, 32, 32, 10, 32, 0.5, 1.6, 0.15, 4.0);
 
-		moveSpeed = 0.5;
-		maxSpeed = 1.6;
 		stopSpeed = 0.4;
-		fallSpeed = 0.15;
-		maxFallSpeed = 4.0;
 		jumpStart = -4.8;
 		facingRight = true;
-		health = maxHealth = 5;
 
 		scratchDamage = 8;
 		scratchRange = 40;
 
 		// Load sprites
-		try {
-			BufferedImage spriteSheet = ImageIO.read(getClass().getResourceAsStream("/Sprites/Player/CaksSprite.gif"));
-			sprites = new ArrayList<BufferedImage[]>();
-			for (int i = 0; i < 4; i++) { // rows
-				BufferedImage[] bi = new BufferedImage[numFrames[i]];
-				for (int j = 0; j < numFrames[i]; j++) { // column
-					bi[j] = spriteSheet.getSubimage(j * width, i * height, width, height);
-				}
-				sprites.add(bi);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		sprites = loadSprites("/Sprites/Player/CaksSprite.gif", 5, numFrames, width, height);
 
 		animation = new Animation();
 		currentAction = IDLE;
@@ -85,20 +58,8 @@ public class Player extends MapObject {
 		sfx.put("scratch", new AudioPlayer("/Audio/punch.wav")); // isi lokasi music
 	}
 
-	public int getHealth() {
-		return health;
-	}
-
-	public int getMaxHealth() {
-		return maxHealth;
-	}
-
 	public void setScratching() {
 		scratching = true;
-	}
-	
-	public boolean isDead() {
-		return dead;
 	}
 
 	/*
@@ -138,19 +99,10 @@ public class Player extends MapObject {
 	}
 
 	public void checkHealth() {
-		if (health < 0)
-			health = 0;
-		if (health == 0)
+		if (healthPoints < 0)
+			healthPoints = 0;
+		if (healthPoints == 0)
 			dead = true;
-	}
-
-	private void hit(int damage) {
-		if (flinching)
-			return;
-		health -= damage;
-		checkHealth();
-		flinching = true;
-		flinchTimer = System.nanoTime();
 	}
 
 	private void checkJumping() {
@@ -181,20 +133,11 @@ public class Player extends MapObject {
 		}
 	}
 
-	private void getNextPosition() {
-
-		// Movement
-		if (left) {
-			dx -= moveSpeed;
-			if (dx < -maxSpeed) {
-				dx = maxSpeed;
-			}
-		} else if (right) {
-			dx += moveSpeed;
-			if (dx > maxSpeed) {
-				dx = maxSpeed;
-			}
-		} else { // if not going left or right, stop
+	@Override
+	protected void move() {
+		if (left || right) {
+			super.move();
+		} else {
 			if (dx > 0) {
 				dx -= stopSpeed;
 				if (dx < 0) {
@@ -207,6 +150,12 @@ public class Player extends MapObject {
 				}
 			}
 		}
+	}
+
+	private void getNextPosition() {
+
+		// Movement
+		move();
 
 		// can not move while attacking, except in air
 		if ((currentAction == SCRATCHING) && !(jumping || falling)) {
@@ -249,22 +198,26 @@ public class Player extends MapObject {
 		}
 
 		// Set animation
+		setAnimation();
+		// Set direction
+		setDirection();
+	}
+
+	private void setAnimation() {
 		if (scratching) {
 			if (currentAction != SCRATCHING) {
 				sfx.get("scratch").play();
-				currentAction = SCRATCHING;
-				animation.setFrames(sprites.get(SCRATCHING));
-				animation.setDelay(50);
-				width = 32;
+				configAnimation(SCRATCHING, 50, 32);
 			}
 		} else if (dy > 0) {
 			/*
 			 * if (gliding) { if (currentAction != GLIDING) { currentAction = GLIDING;
 			 * animation.setFrames(sprites.get(GLIDING)); animation.setDelay(100); width =
-			 * 30; } else if (currentAction != FALLING) { currentAction = FALLING;
-			 * animation.setFrames(sprites.get(FALLING)); animation.setDelay(100); width =
-			 * 30; } }
+			 * 30; } else
 			 */
+			if (currentAction != FALLING) {
+				configAnimation(FALLING, 100, 32);
+			}
 		} else if (dy < 0) {
 			if (currentAction != JUMPING) {
 				configAnimation(JUMPING, 150, 32);
@@ -280,13 +233,16 @@ public class Player extends MapObject {
 		}
 
 		animation.update();
+	}
 
-		// Set direction
+	private void setDirection() {
 		if (currentAction != SCRATCHING) {
-			if (right)
+			if (right) {
 				facingRight = true;
-			if (left)
+			}
+			if (left) {
 				facingRight = false;
+			}
 		}
 	}
 

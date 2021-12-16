@@ -2,6 +2,7 @@ package Entity.Enemies;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -11,48 +12,17 @@ import TileMap.TileMap;
 
 public class Tugas extends Enemy{
 	
-	private BufferedImage[] sprites; 
+	private ArrayList<BufferedImage[]> sprites; 
 	public Tugas(TileMap tm) {
-		super(tm);
+		super(tm, 10, 32, 32, 32, 32, 0.3, 0.3, 0.2, 10.0, 1);
 		
-		moveSpeed = 0.3;
-		maxSpeed = 0.3;
-		fallSpeed = 0.2;
-		maxFallSpeed = 10.0;
-		
-		width = 32;
-		height = 32;
-		cwidth = 20;
-		cheight = 20;
-		
-		health = maxHealth = 2;
 		damage = 1;
 		
 		//load sprites
-		try {
-			
-			BufferedImage spritesheet = ImageIO.read(
-				getClass().getResourceAsStream(
-					"/Sprites/Enemy/Tugas.gif"	//add tugas image
-				)	
-			);
-			
-			sprites = new BufferedImage[3];
-			for(int i=0; i<sprites.length; i++) {
-				sprites[i] = spritesheet.getSubimage(
-						i*width, 
-						0, 
-						width, 
-						height
-				); 
-			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
+		sprites = loadSprites("/Sprites/Enemy/Tugas.gif", 1, new int[] {3}, cwidth, cheight);
 		
 		animation = new Animation();
-		animation.setFrames(sprites);
+		animation.setFrames(sprites.get(0));
 		animation.setDelay(300);
 		
 		right = true;
@@ -61,17 +31,7 @@ public class Tugas extends Enemy{
 	
 	private void getNextPosition() {
 		// Movement
-		if (left) {
-			dx -= moveSpeed;
-			if (dx < -maxSpeed) {
-				dx = maxSpeed;
-			}
-		} else if (right) {
-			dx += moveSpeed;
-			if (dx > maxSpeed) {
-				dx = maxSpeed;
-			}
-		}
+		move();
 		
 		// falling
 		if(falling) {
