@@ -20,7 +20,7 @@ public class GameOverState extends GameState{
 		this.gsm = gsm;
 		
 		try {
-			bg = new Background("/Background/GameOpening.gif", 1);
+			bg = new Background("/Background/GameOver.gif", 1);
 			bg.setVector(-0.1, 0);
 			titleColor = new Color(128,0,0);
 			titleFont =  new Font("Century Gothic", Font.PLAIN, 28);
@@ -41,7 +41,7 @@ public class GameOverState extends GameState{
 		
 		g.setColor(titleColor);
 		g.setFont(titleFont);
-		g.drawString("Game Over", 30, 70);
+		g.drawString("Game Over", 80, 70);
 		
 		g.setFont(font);
 		for(int i = 0; i<option.length; i++) {
