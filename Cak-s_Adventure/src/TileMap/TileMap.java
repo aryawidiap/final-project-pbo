@@ -33,6 +33,7 @@ public class TileMap {
 	// Tileset
 	private BufferedImage tileSet;
 	private int numTilesAcross;
+	private int numTilesDown;
 	private Tile[][] tiles;
 
 	// Drawing
@@ -52,14 +53,18 @@ public class TileMap {
 		try {
 			tileSet = ImageIO.read(getClass().getResourceAsStream(s));
 			numTilesAcross = tileSet.getWidth() / tileSize;
-			tiles = new Tile[2][numTilesAcross];
+			numTilesDown = tileSet.getHeight() / tileSize;
+			tiles = new Tile[numTilesDown][numTilesAcross];
 			BufferedImage subImage;
 			for (int col = 0; col < numTilesAcross; col++) {
-				subImage = tileSet.getSubimage(col * tileSize, 0, tileSize, tileSize);
-				tiles[0][col] = new Tile(subImage, Tile.NORMAL);
-				subImage = tileSet.getSubimage(col * tileSize, tileSize, tileSize, tileSize);
-				tiles[1][col] = new Tile(subImage, Tile.BLOCKED);
-
+				for (int row = 0; row < numTilesDown; row++) {
+					subImage = tileSet.getSubimage(col * tileSize, row * tileSize, tileSize, tileSize);
+					if(row == 1){
+						tiles[row][col] = new Tile(subImage, Tile.BLOCKED);
+					} else {
+						tiles[row][col] = new Tile(subImage, Tile.NORMAL);	
+					}
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,8 +121,8 @@ public class TileMap {
 	}
 
 	public int getType(int row, int col) {
-		if(row < 0) {
-			return Tile.NORMAL; 
+		if (row < 0) {
+			return Tile.NORMAL;
 		}
 		int rc = map[row][col];
 		int r = rc / numTilesAcross;
@@ -128,7 +133,7 @@ public class TileMap {
 	public void setTween(double tween) {
 		this.tween = tween;
 	}
-	
+
 	public void setPosition(double x, double y) {
 		this.x += (x - this.x) * tween;
 		this.y += (y - this.y) * tween;
