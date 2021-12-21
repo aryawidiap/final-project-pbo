@@ -22,7 +22,7 @@ public class GameOverState extends GameState{
 		try {
 			bg = new Background("/Background/GameOver.gif", 1);
 			bg.setVector(-0.1, 0);
-			titleColor = new Color(128,0,0);
+			titleColor = new Color(255,255,255);
 			titleFont =  new Font("Century Gothic", Font.PLAIN, 28);
 			font = new Font("Arial", Font.PLAIN, 12);
 		} catch (Exception e) {
@@ -34,23 +34,23 @@ public class GameOverState extends GameState{
 		
 	}
 	public void update() {
-		bg.update();
+		//bg.update();
 	}
 	public void draw(Graphics2D g) {
 		bg.draw(g);
 		
 		g.setColor(titleColor);
 		g.setFont(titleFont);
-		g.drawString("Game Over", 80, 70);
+		g.drawString("Game Over", 70, 70);
 		
 		g.setFont(font);
 		for(int i = 0; i<option.length; i++) {
 			if(i==currentChoice) {
-				g.setColor(Color.BLACK);
+				g.setColor(Color.GREEN);
 			} else {
-				g.setColor(Color.RED);
+				g.setColor(Color.WHITE);
 			}
-			g.drawString(option[i], 145, 140+i*15);
+			g.drawString(option[i], 133, 160+i*15);
 		}
 		
 	}
