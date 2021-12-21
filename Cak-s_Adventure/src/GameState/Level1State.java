@@ -41,7 +41,7 @@ public class Level1State extends GameState {
 
 		bg = new Background("/Background/GameBackground.gif", 0.1); // input background here
 		player = new Player(tileMap);
-		player.setPosition(100, 100); // set player position to desired starting point
+		player.setPosition(64, 205); // set player position to desired starting point
 
 		populateEnemies();
 
