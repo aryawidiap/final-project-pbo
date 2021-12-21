@@ -19,7 +19,7 @@ public class Tugas extends Enemy{
 		damage = 1;
 		
 		//load sprites
-		sprites = loadSprites("/Sprites/Enemy/Tugas.gif", 1, new int[] {3}, cwidth, cheight);
+		sprites = loadSprites("/Sprites/Enemy/Tugas.gif", 1, new int[] {3}, width, height);
 		
 		animation = new Animation();
 		animation.setFrames(sprites.get(0));
