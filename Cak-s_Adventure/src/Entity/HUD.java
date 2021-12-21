@@ -37,11 +37,6 @@ public class HUD {
 			30,
 			25
 		);
-		/*g.drawString(
-			player.getFire()/100+"/"+player.getMaxFire(), 
-			30, 
-			45
-		);*/
 	}
 	
 }
