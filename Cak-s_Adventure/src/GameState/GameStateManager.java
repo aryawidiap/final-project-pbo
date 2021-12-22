@@ -58,10 +58,12 @@ public class GameStateManager {
 	}
 	
 	public void keyPressed(int k) {
-		gameStates[currentState].keyPressed(k);
+		if(gameStates[currentState] != null)
+			gameStates[currentState].keyPressed(k);
 	}
 	
 	public void keyReleased(int k) {
+		if(gameStates[currentState] != null)
 		gameStates[currentState].keyReleased(k);
 	}
 }
