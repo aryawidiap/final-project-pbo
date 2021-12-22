@@ -59,10 +59,10 @@ public class Level1State extends GameState {
 
 		Point[] points = new Point[] { // set enemies starting point
 			new Point(200, 100),
-			new Point(860, 200),
-			new Point(1525, 200), 
-			new Point(1680, 200), 
-			new Point(1800, 200)
+			new Point(860, 100),
+			new Point(1525, 120), 
+			new Point(2400, 200), 
+			new Point(2656, 190)
 		};
 
 		for (int i = 0; i < points.length; i++) {
